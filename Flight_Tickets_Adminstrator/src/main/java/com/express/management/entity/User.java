@@ -2,6 +2,8 @@ package com.express.management.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +23,8 @@ public class User {
 	private String username;
 	
 	@Column(name = "Usertype")
-	private String usertype;
+	@Enumerated(EnumType.STRING)
+	private UserType usertype;
 	
 	@Column(name = "UserPassword")
 	private String userpassword;
@@ -31,6 +34,11 @@ public class User {
 	
 	@Column(name = "UserEmail")
 	private String useremail;
+	
+    public enum UserType {
+        Admin,
+        Customer
+    }
 
 	public long getUserid() {
 		return userid;
@@ -48,11 +56,11 @@ public class User {
 		this.username = username;
 	}
 
-	public String getUsertype() {
+	public UserType getUsertype() {
 		return usertype;
 	}
 
-	public void setUsertype(String usertype) {
+	public void setUsertype(UserType usertype) {
 		this.usertype = usertype;
 	}
 
@@ -80,10 +88,8 @@ public class User {
 		this.useremail = useremail;
 	}
 
-	public User(long userid, String username, String usertype, String userpassword, String userphone,
-			String useremail) {
+	public User(String username, UserType usertype, String userpassword, String userphone, String useremail) {
 		super();
-		this.userid = userid;
 		this.username = username;
 		this.usertype = usertype;
 		this.userpassword = userpassword;
@@ -91,8 +97,10 @@ public class User {
 		this.useremail = useremail;
 	}
 
-	public User(String username, String usertype, String userpassword, String userphone, String useremail) {
+	public User(long userid, String username, UserType usertype, String userpassword, String userphone,
+			String useremail) {
 		super();
+		this.userid = userid;
 		this.username = username;
 		this.usertype = usertype;
 		this.userpassword = userpassword;

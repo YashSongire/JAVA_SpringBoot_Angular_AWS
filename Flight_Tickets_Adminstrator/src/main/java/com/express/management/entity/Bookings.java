@@ -31,7 +31,8 @@ public class Bookings {
 	@Column
 	private Date bookingdate;
 	
-	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn
     private List<Passenger> passengers;
 	
 	@Column
