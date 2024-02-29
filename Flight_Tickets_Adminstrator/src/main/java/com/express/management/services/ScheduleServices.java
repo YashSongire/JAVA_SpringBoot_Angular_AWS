@@ -1,6 +1,7 @@
 package com.express.management.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -37,16 +38,16 @@ public class ScheduleServices implements ImplScheduleService{
 	    LOG.info("Services - Create Schedule");
 	    List<Schedule> newSchedules = new ArrayList<>();
 	    for (Schedule schedule : schedules) {
-	    	if(schedule.getSource().getAirportid() != schedule.getDestination().getAirportid()) {
-	        Optional<Airport> sourceOpt = airrepo.findById(schedule.getSource().getAirportid());
-	        Optional<Airport> destinationOpt = airrepo.findById(schedule.getDestination().getAirportid());
+	    	if(schedule.getSource().getAirportlocation() != schedule.getDestination().getAirportlocation()) {
+	        Optional<Airport> sourceOpt = airrepo.findByairportlocation(schedule.getSource().getAirportlocation());
+	        Optional<Airport> destinationOpt = airrepo.findByairportlocation(schedule.getDestination().getAirportlocation());
 	        	if (sourceOpt.isPresent() && destinationOpt.isPresent()) {
 	        		Schedule schedulenew = new Schedule(sourceOpt.get(),destinationOpt.get(),schedule.getDateAndTimeOfArrival(),schedule.getDateAndTimeOfDeparture());
 	        		newSchedules.add(schedulenew);
 	        		schedulerepo.saveAll(newSchedules);
 	        		}
 	        	else {
-	        		throw new ResourceNotFoundException("Wrong Airport IDs: " + schedule.getSource().getAirportid() + " or " + schedule.getDestination().getAirportid());
+	        		throw new ResourceNotFoundException("Wrong Airport: " + schedule.getSource().getAirportlocation() + " or " + schedule.getDestination().getAirportlocation());
 	        		}
 	        	}
 	    	else
@@ -120,5 +121,30 @@ public class ScheduleServices implements ImplScheduleService{
 		}
 		else 
 		throw new ResourceNotFoundException("No DATA for Mentioned ID");
+	}
+
+	@Override
+	public List<Schedule> findAllWithCreationDateTime(Date creationDateTime) {
+		LOG.info("Services - Get Schedule of Id - " +creationDateTime);
+		Optional<List<Schedule>> schdata = schedulerepo.findAllWithCreationDateTime(creationDateTime);
+		if(schdata.isPresent()) {
+			return schdata.get();
+		}
+		else
+			throw new ResourceNotFoundException("No DATA for Mentioned Date");
+		
+	}
+
+	@Override
+	public List<Schedule> findAllWithdate(Date date) {
+		// TODO Auto-generated method stub
+		LOG.info("Services - Get Schedule of Id - " +date);
+		Optional<List<Schedule>> schdata = schedulerepo.findByDate(date);
+		if(schdata.isPresent()) {
+			return schdata.get();
+		}
+		else
+			throw new ResourceNotFoundException("No DATA for Mentioned Date");
+		
 	}
 }

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.express.management.services.ImplAirportService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1")
 public class AirPortController {
@@ -68,6 +70,14 @@ public class AirPortController {
 	public ResponseEntity<Airport> viewAirport(@PathVariable long airportid) throws ResourceNotFoundException{
 		LOG.info("Controller - Details of Airport ID - " +airportid);
 		Airport airport = airservice.viewAirport(airportid);
+		return new ResponseEntity<Airport>(airport,HttpStatus.OK);
+	}
+	
+	// All Airports
+	@GetMapping("/airports/byname/{airportname}")
+	public ResponseEntity<Airport> viewAirportbylocation(@PathVariable String airportname) throws ResourceNotFoundException{
+		LOG.info("Controller - Details of Airport ID - " +airportname);
+		Airport airport = airservice.findbylocation(airportname);
 		return new ResponseEntity<Airport>(airport,HttpStatus.OK);
 	}
 }

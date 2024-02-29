@@ -20,11 +20,11 @@ public class ScheduledFlight {
 	private long scheduleflightid;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name = "Flight")
 	private Flight flight;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name = "Schedule")
 	private Schedule schedule;
 	
 	@Column

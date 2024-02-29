@@ -12,5 +12,6 @@ public interface ImplAirportService {
 	public Set<Airport> viewAllAirports();
 	public String removeAirport(long airportid) throws ResourceNotFoundException;
 	public List<Airport> updateAirport(List<Airport> airport) throws ResourceNotFoundException;
-	public Airport viewAirport(long airportid) throws ResourceNotFoundException;
+	public Airport viewAirport(long airportid) throws ResourceNotFoundException; 
+	public Airport findbylocation(String location) throws ResourceNotFoundException;
 }

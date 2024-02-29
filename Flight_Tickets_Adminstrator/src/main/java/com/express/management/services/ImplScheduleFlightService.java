@@ -1,5 +1,6 @@
 package com.express.management.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -14,4 +15,5 @@ public interface ImplScheduleFlightService {
 	public String removeScheduledFlight(long scheduledflightid) throws ResourceNotFoundException;
 	public List<ScheduledFlight> updateScheduledFlight(List<ScheduledFlight> scheduledflight) throws ResourceNotFoundException;
 	public ScheduledFlight viewScheduledFlight(long scheduledflightid) throws ResourceNotFoundException;
+	public List<ScheduledFlight> viewAllScheduledflightsbylocationanddate(String source, String destination, Date date);
 }

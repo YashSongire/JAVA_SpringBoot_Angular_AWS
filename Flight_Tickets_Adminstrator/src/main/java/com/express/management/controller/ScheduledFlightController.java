@@ -1,13 +1,17 @@
 package com.express.management.controller;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.express.management.entity.ScheduledFlight;
@@ -23,6 +28,7 @@ import com.express.management.services.ImplScheduleFlightService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1")
 public class ScheduledFlightController {
@@ -70,5 +76,15 @@ public class ScheduledFlightController {
 		LOG.info("Controller - Find ScheduledFlight By ID");
 		ScheduledFlight scheduleflight = schflservice.viewScheduledFlight(scheduledflightid);
 		return new ResponseEntity<ScheduledFlight>(scheduleflight,HttpStatus.OK);
+	}
+	
+	// Find Schedule By Date
+	@GetMapping("/scheduleflight/findschdeuledflights")
+	public ResponseEntity<List<ScheduledFlight>> viewAllbyDateandLocation(@RequestParam String sourceLocation,
+            @RequestParam String destinationLocation,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date departures) throws ResourceNotFoundException, ParseException{
+		LOG.info("Controller - Get Details of Date " + sourceLocation+destinationLocation +departures);
+		List<ScheduledFlight> sch = schflservice.viewAllScheduledflightsbylocationanddate(sourceLocation, destinationLocation, departures);
+		return new ResponseEntity<List<ScheduledFlight>>(sch,HttpStatus.OK);
 	}
 }

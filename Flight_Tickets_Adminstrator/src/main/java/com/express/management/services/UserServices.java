@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.express.management.entity.User;
+import com.express.management.entity.User.UserType;
 import com.express.management.exception.ResourceNotFoundException;
 import com.express.management.repository.UserRepository;
 
@@ -91,6 +92,20 @@ public class UserServices implements ImplUserService{
 		}
 		else 
 			throw new ResourceNotFoundException("No User Asscociated with ID" +Userid);
+	}
+
+	// // Find User By UserName, Password, Type
+	@Override
+	public User findUserByUserNamePasswordUserType(String username, String password, UserType usertype)
+			throws ResourceNotFoundException {
+		// TODO Auto-generated method stub
+		LOG.info("Service - Find UserDetails by Name, passwod,type" + username);
+		Optional<User> userdata = userRepo.findByUserNamePasswordTYpe(username, password, usertype);
+		if(userdata.isPresent()) {
+			return userdata.get();
+		}
+		else 
+			throw new ResourceNotFoundException("No User Asscociated with Name" +username);
 	}
 
 }

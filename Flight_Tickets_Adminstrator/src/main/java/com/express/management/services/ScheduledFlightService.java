@@ -1,6 +1,7 @@
 package com.express.management.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -113,5 +114,19 @@ public class ScheduledFlightService implements ImplScheduleFlightService{
 		}
 		else 
 		throw new ResourceNotFoundException("No DATA for Mentioned ID");
+	}
+
+	//All FLights By Location and Date
+	@Override
+	public List<ScheduledFlight> viewAllScheduledflightsbylocationanddate(String source, String destination,
+			Date date) {
+		// TODO Auto-generated method stub
+		LOG.info("Service Inside Get ScheduleFlight" + source+ " " +destination + " "+ date);
+		Optional<List<ScheduledFlight>> schfldata = schflrepo.findFlightsBySourceAndDestinationAndDeparture(source, destination, date);
+		if(schfldata.isPresent()) {
+			return schfldata.get();	
+		}
+		else 
+		throw new ResourceNotFoundException("No DATA for Mentioned Locations");
 	}
 }

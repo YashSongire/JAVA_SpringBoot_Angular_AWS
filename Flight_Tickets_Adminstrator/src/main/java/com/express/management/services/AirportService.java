@@ -89,4 +89,16 @@ public class AirportService implements ImplAirportService{
 		else 
 			throw new ResourceNotFoundException("No Airport Associated with : " +airportid);
 	}
+
+	@Override
+	public Airport findbylocation(String location) throws ResourceNotFoundException {
+		// TODO Auto-generated method stub
+		LOG.info("Service - Airport Details - " +location);
+		Optional<Airport> airport = airRepo.findByairportlocation(location);
+		if(airport.isPresent()) {
+			return airport.get();
+		}
+		else
+			throw new ResourceNotFoundException("No Airport Available");
+	}
 }

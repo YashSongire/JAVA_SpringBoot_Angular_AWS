@@ -13,4 +13,6 @@ public interface AirportRepository extends JpaRepository<Airport, Long>{
 	public Optional<Airport> findById(long airportid);
 
 	public Optional<Airport> deleteById(long airportid);
+	
+	public Optional<Airport> findByairportlocation(String airportname);
 }

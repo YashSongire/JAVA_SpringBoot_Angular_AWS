@@ -1,13 +1,17 @@
 package com.express.management.controller;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +27,7 @@ import com.express.management.services.ImplScheduleService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1")
 public class ScheduleController { 
@@ -72,4 +77,19 @@ public class ScheduleController {
 		return new ResponseEntity<Schedule>(sch,HttpStatus.OK);
 	}
 	
+	// Find Schedule By Date & Time
+	@GetMapping("/schedules/departuredateandtime/{departures}")
+	public ResponseEntity<List<Schedule>> viewAllbyDatetime(@Valid @PathVariable  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date departures) throws ResourceNotFoundException, ParseException{
+		LOG.info("Controller - Get Details of ID " + departures);
+		List<Schedule> sch = schservice.findAllWithCreationDateTime(departures);
+		return new ResponseEntity<List<Schedule>>(sch,HttpStatus.OK);
+	}
+	
+	// Find Schedule By Date
+	@GetMapping("/schedules/departuredate/{departures}")
+	public ResponseEntity<List<Schedule>> viewAllbyDate(@PathVariable("departures") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date departures) throws ResourceNotFoundException, ParseException{
+		LOG.info("Controller - Get Details of Date " + departures);
+		List<Schedule> sch = schservice.findAllWithdate(departures);
+		return new ResponseEntity<List<Schedule>>(sch,HttpStatus.OK);
+	}
 }

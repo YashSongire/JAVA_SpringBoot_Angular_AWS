@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.express.management.entity.User;
+import com.express.management.entity.User.UserType;
 import com.express.management.exception.ResourceNotFoundException;
 import com.express.management.services.ImplUserService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -69,6 +73,16 @@ public class UserController {
 	public ResponseEntity<User> viewUser(@Valid @PathVariable long Userid) throws ResourceNotFoundException{
 		LOG.info("Controller - User Detais ID : " +Userid);
 		User user = userservice.viewUser(Userid);
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
+	
+	// Get User By UserName
+	@GetMapping("/users/userdata")
+	public ResponseEntity<User> viewUserbyUsernamePasswordType(@Valid @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam UserType type) throws ResourceNotFoundException{
+		LOG.info("Controller - User Detais ID : " +username+type);
+		User user = userservice.findUserByUserNamePasswordUserType(username, password, type);
 		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
 }
