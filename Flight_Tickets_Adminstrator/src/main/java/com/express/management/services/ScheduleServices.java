@@ -1,5 +1,6 @@
 package com.express.management.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -124,7 +125,7 @@ public class ScheduleServices implements ImplScheduleService{
 	}
 
 	@Override
-	public List<Schedule> findAllWithCreationDateTime(Date creationDateTime) {
+	public List<Schedule> findAllWithCreationDateTime(LocalDateTime creationDateTime) {
 		LOG.info("Services - Get Schedule of Id - " +creationDateTime);
 		Optional<List<Schedule>> schdata = schedulerepo.findAllWithCreationDateTime(creationDateTime);
 		if(schdata.isPresent()) {

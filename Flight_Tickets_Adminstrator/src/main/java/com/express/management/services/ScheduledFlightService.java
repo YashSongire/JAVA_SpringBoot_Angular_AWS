@@ -12,10 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.express.management.entity.Airport;
 import com.express.management.entity.Flight;
 import com.express.management.entity.Schedule;
 import com.express.management.entity.ScheduledFlight;
 import com.express.management.exception.ResourceNotFoundException;
+import com.express.management.repository.AirportRepository;
 import com.express.management.repository.FlightRepository;
 import com.express.management.repository.ScheduleFlightRepository;
 import com.express.management.repository.ScheduleRepository;
@@ -32,6 +34,8 @@ public class ScheduledFlightService implements ImplScheduleFlightService{
 	private ScheduleRepository schedulerepo;
 	@Autowired
 	private FlightRepository flrepo;
+	@Autowired
+	private AirportRepository airrepo;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(PassengerService.class);
 	
@@ -39,20 +43,28 @@ public class ScheduledFlightService implements ImplScheduleFlightService{
 	public List<ScheduledFlight> addScheduledFlight(List<ScheduledFlight> scheduledflight) {
 		// TODO Auto-generated method stub
 		LOG.info("Service Inside Add ScheduleFlight");
-		   List<ScheduledFlight> newScheduleFlight = new ArrayList<>();
-		    for (ScheduledFlight schfl : scheduledflight) {
-		        Optional<Schedule> schedule = schedulerepo.findById(schfl.getSchedule().getScheduleid());
-		        Optional<Flight> flight = flrepo.findById(schfl.getFlight().getFlightId());
-		        	if (schedule.isPresent() && flight.isPresent()){
-		        		ScheduledFlight schedulefl = new ScheduledFlight(flight.get(),schedule.get(),schfl.getAvailableSeats());
-		        		newScheduleFlight.add(schedulefl);
-		        		schflrepo.saveAll(newScheduleFlight);
-		        		}
-		        	else {
-		        		throw new ResourceNotFoundException("Wrong Flight IDs: " + schfl.getFlight().getFlightId() + " or Wrong Schdeule ID " + schfl.getSchedule().getScheduleid());
-		        		}
-		        	}
-		    return newScheduleFlight;
+		   List<ScheduledFlight> scheduleflights = new ArrayList<>();
+		   for(ScheduledFlight sch : scheduledflight ) {
+			   LOG.info("Info" +sch.getSchedule().getSource().getAirportlocation() 
+					   + sch.getSchedule().getDestination().getAirportlocation()
+					   + sch.getFlight().getFlightId());
+			   Optional<Airport> source = airrepo.findByairportlocation(sch.getSchedule().getSource().getAirportlocation());
+			   Optional<Airport> destination = airrepo.findByairportlocation(sch.getSchedule().getDestination().getAirportlocation());
+			   Optional<Flight> flight = flrepo.findById(sch.getFlight().getFlightId());
+			   if(source.isPresent() && destination.isPresent() && flight.isPresent()) {
+				   Schedule schedule = new Schedule(source.get(),destination.get(), sch.getSchedule().getDateAndTimeOfArrival(), sch.getSchedule().getDateAndTimeOfDeparture());
+				   ScheduledFlight schfl = new ScheduledFlight(flight.get(), schedule, sch.getAvailableSeats());
+			
+				   schflrepo.save(schfl);
+				   scheduleflights.add(schfl);
+			   }
+			   else
+				   throw new ResourceNotFoundException("No Values In Database" + source.get().getAirportlocation() 
+						   + destination.get().getAirportlocation()
+						   + flight.get().getFlightId()
+						   );
+		   }
+		    return scheduleflights;
 	}
 
 	@Override

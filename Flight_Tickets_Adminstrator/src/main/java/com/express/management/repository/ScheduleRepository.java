@@ -1,6 +1,6 @@
 package com.express.management.repository;
 
-
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>{
 	
     @Query("select a from Schedule a where a.dateAndTimeOfDeparture = :creationDateTime")
     Optional<List<Schedule>> findAllWithCreationDateTime(
-      @Param("creationDateTime") Date creationDateTime);
+      @Param("creationDateTime") LocalDateTime creationDateTime);
     
     @Query("SELECT s FROM Schedule s WHERE TO_CHAR(s.dateAndTimeOfDeparture, 'YYYY-MM-DD') = TO_CHAR(:date, 'YYYY-MM-DD')")
     Optional<List<Schedule>> findByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date);

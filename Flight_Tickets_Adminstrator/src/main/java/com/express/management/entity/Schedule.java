@@ -1,6 +1,6 @@
 package com.express.management.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,10 +30,10 @@ public class Schedule {
     private Airport destination;
 
     @Column(name = "Arrivals")
-    private Date dateAndTimeOfArrival;
+    private LocalDateTime dateAndTimeOfArrival;
 
     @Column(name = "Departures")
-    private Date dateAndTimeOfDeparture;
+    private LocalDateTime dateAndTimeOfDeparture;
 
 	public long getScheduleid() {
 		return scheduleid;
@@ -59,24 +59,24 @@ public class Schedule {
 		this.destination = destination;
 	}
 
-	public Date getDateAndTimeOfArrival() {
+	public LocalDateTime getDateAndTimeOfArrival() {
 		return dateAndTimeOfArrival;
 	}
 
-	public void setDateAndTimeOfArrival(Date dateAndTimeOfArrival) {
+	public void setDateAndTimeOfArrival(LocalDateTime dateAndTimeOfArrival) {
 		this.dateAndTimeOfArrival = dateAndTimeOfArrival;
 	}
 
-	public Date getDateAndTimeOfDeparture() {
+	public LocalDateTime getDateAndTimeOfDeparture() {
 		return dateAndTimeOfDeparture;
 	}
 
-	public void setDateAndTimeOfDeparture(Date dateAndTimeOfDeparture) {
+	public void setDateAndTimeOfDeparture(LocalDateTime dateAndTimeOfDeparture) {
 		this.dateAndTimeOfDeparture = dateAndTimeOfDeparture;
 	}
 
-	public Schedule(Long scheduleid, Airport sourceAirport, Airport destinationAirport, Date dateAndTimeOfArrival,
-			Date dateAndTimeOfDeparture) {
+	public Schedule(Long scheduleid, Airport sourceAirport, Airport destinationAirport, LocalDateTime dateAndTimeOfArrival,
+			LocalDateTime dateAndTimeOfDeparture) {
 		super();
 		this.scheduleid = scheduleid;
 		this.source = sourceAirport;
@@ -85,8 +85,8 @@ public class Schedule {
 		this.dateAndTimeOfDeparture = dateAndTimeOfDeparture;
 	}
 
-	public Schedule(Airport sourceAirport, Airport destinationAirport, Date dateAndTimeOfArrival,
-			Date dateAndTimeOfDeparture) {
+	public Schedule(Airport sourceAirport, Airport destinationAirport, LocalDateTime dateAndTimeOfArrival,
+			LocalDateTime dateAndTimeOfDeparture) {
 		super();
 		this.source = sourceAirport;
 		this.destination = destinationAirport;

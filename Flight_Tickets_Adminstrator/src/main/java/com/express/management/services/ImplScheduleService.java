@@ -1,5 +1,6 @@
 package com.express.management.services;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +15,7 @@ public interface ImplScheduleService {
 	public String removeSchedule(long scheduleid) throws ResourceNotFoundException;
 	public List<Schedule> updateSchedule(List<Schedule> schedule) throws ResourceNotFoundException;
 	public Schedule viewSchedule(long scheduleid) throws ResourceNotFoundException;
-	public List<Schedule> findAllWithCreationDateTime(Date creationDateTime);
+	public List<Schedule> findAllWithCreationDateTime(LocalDateTime creationDateTime);
 	public List<Schedule> findAllWithdate(Date date);
 	
 }

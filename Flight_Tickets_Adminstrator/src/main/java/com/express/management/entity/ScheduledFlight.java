@@ -1,5 +1,6 @@
 package com.express.management.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class ScheduledFlight {
 	@JoinColumn(name = "Flight")
 	private Flight flight;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Schedule")
 	private Schedule schedule;
 	

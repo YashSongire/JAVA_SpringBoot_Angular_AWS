@@ -26,6 +26,7 @@ public interface ScheduleFlightRepository extends JpaRepository<ScheduledFlight,
 	            @Param("sourceLocation") String sourceLocation,
 	            @Param("destinationLocation") String destinationLocation,
 	            @Param("date") Date date);
+	
 }
 
 

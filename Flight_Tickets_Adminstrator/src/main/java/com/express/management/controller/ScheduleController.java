@@ -1,6 +1,7 @@
 package com.express.management.controller;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -79,7 +80,7 @@ public class ScheduleController {
 	
 	// Find Schedule By Date & Time
 	@GetMapping("/schedules/departuredateandtime/{departures}")
-	public ResponseEntity<List<Schedule>> viewAllbyDatetime(@Valid @PathVariable  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date departures) throws ResourceNotFoundException, ParseException{
+	public ResponseEntity<List<Schedule>> viewAllbyDatetime(@Valid @PathVariable  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departures) throws ResourceNotFoundException, ParseException{
 		LOG.info("Controller - Get Details of ID " + departures);
 		List<Schedule> sch = schservice.findAllWithCreationDateTime(departures);
 		return new ResponseEntity<List<Schedule>>(sch,HttpStatus.OK);
